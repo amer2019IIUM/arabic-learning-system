@@ -264,7 +264,7 @@ class DWidget {
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 1,
               color: Colors.white,
-              child: Text("Studnet's section",
+              child: Text("Student's section",
                   style: GoogleFonts.robotoMono(
                       color: Colors.black, fontSize: 20)),
             ),

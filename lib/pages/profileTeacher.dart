@@ -57,358 +57,371 @@ class _TeacherProfileState extends State<TeacherProfile> {
             .document(passId[14])
             .snapshots(),
         builder: (context, snapshot) {
-          return Card(
-              child: Container(
-            child: ListView(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Ink(
-                          height: 250,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(50),
-                              bottomLeft: Radius.circular(50),
-                            ),
-                            gradient: LinearGradient(colors: [
-                              Color(0xFF4AC8EA),
-                              Color(0xFF4AC8EA),
-                            ]),
-                          ),
-                        ),
-                        Ink(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: Colors.black38,
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(50),
-                              bottomLeft: Radius.circular(50),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.only(top: 140),
-                          child: Column(
-                            children: <Widget>[
-                              Card(
-                                elevation: 2,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                color: Colors.white,
-                                child: Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        colors: [
-                                          Color(0xFF4AC8EA),
-                                          Color(0xFF4AC8EA),
-                                          Colors.pink[200],
-                                        ]),
-                                  ),
-                                  child: Center(
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.network(
-                                            snapshot.data["photo"],
-                                            width: 300,
-                                            height: 300,
-                                            fit: BoxFit.fill)),
-                                  ),
-                                ),
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Card(
+                child: Container(
+              child: ListView(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          Ink(
+                            height: 250,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
                               ),
+                              gradient: LinearGradient(colors: [
+                                Color(0xFF4AC8EA),
+                                Color(0xFF4AC8EA),
+                              ]),
+                            ),
+                          ),
+                          Ink(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.black38,
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(50),
+                                bottomLeft: Radius.circular(50),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            margin: const EdgeInsets.only(top: 140),
+                            child: Column(
+                              children: <Widget>[
+                                Card(
+                                  elevation: 2,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  color: Colors.white,
+                                  child: Container(
+                                    width: 150,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Color(0xFF4AC8EA),
+                                            Color(0xFF4AC8EA),
+                                            Colors.pink[200],
+                                          ]),
+                                    ),
+                                    child: Center(
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Image.network(
+                                              snapshot.data["photo"],
+                                              width: 300,
+                                              height: 300,
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.person,
+                          color: Color(0xFF4AC8EA),
+                        ),
+                        title: Text("Name", style: stle),
+                        subtitle: Text(
+                            snapshot.data["fname"].toString().toUpperCase() +
+                                " " +
+                                snapshot.data["lname"].toString().toUpperCase(),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontStyle: FontStyle.italic)),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.email, color: Color(0xFF4AC8EA)),
+                        title: Text(
+                          "E-Mail",
+                          style: stle,
+                        ),
+                        subtitle: Text(snapshot.data["email"].toString(),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontStyle: FontStyle.italic)),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.padding, color: Color(0xFF4AC8EA)),
+                        title: Text(
+                          "Gender",
+                          style: stle,
+                        ),
+                        subtitle: Text(snapshot.data["gender"],
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontStyle: FontStyle.italic)),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.location_city_outlined,
+                            color: Color(0xFF4AC8EA)),
+                        title: Text("Address", style: stle),
+                        subtitle: Text(snapshot.data["address"],
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontStyle: FontStyle.italic)),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading:
+                            Icon(Icons.description, color: Color(0xFF4AC8EA)),
+                        title: Text(
+                          "Description",
+                          style: stle,
+                        ),
+                        subtitle: Text(snapshot.data["desc"].toString(),
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0,
+                                fontStyle: FontStyle.italic)),
+                      ),
+                      Divider(),
+
+                      Container(
+                        height: 1,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+
+                      ListTile(
+                        leading:
+                            Icon(Icons.stars_rounded, color: Color(0xFF4AC8EA)),
+                        title: Text("Top Skills", style: stle),
+                        subtitle: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [Colors.blue[100], Colors.pink[100]]),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Wrap(
+                            spacing: 5,
+                            children: [
+                              snapshot.data["skills"][0] == null
+                                  ? SizedBox.shrink()
+                                  : FilterChip(
+                                      label: Text(snapshot.data["skills"][0]),
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      selected: false,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      onSelected: (isSelected) {},
+                                      selectedColor: Color(0xffeadffd),
+                                    ),
+                              snapshot.data["skills"][1] == null
+                                  ? SizedBox.shrink()
+                                  : FilterChip(
+                                      label: Text(snapshot.data["skills"][1]),
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      selected: false,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      onSelected: (isSelected) {},
+                                      selectedColor: Color(0xffeadffd),
+                                    ),
+                              snapshot.data["skills"][2] == null
+                                  ? SizedBox.shrink()
+                                  : FilterChip(
+                                      label: Text(snapshot.data["skills"][2]),
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      selected: false,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      onSelected: (isSelected) {},
+                                      selectedColor: Color(0xffeadffd),
+                                    ),
+                              snapshot.data["skills"][3] == null
+                                  ? SizedBox.shrink()
+                                  : FilterChip(
+                                      label: Text(snapshot.data["skills"][3]),
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      selected: false,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      onSelected: (isSelected) {},
+                                      selectedColor: Color(0xffeadffd),
+                                    ),
+                              snapshot.data["skills"][4] == null
+                                  ? SizedBox.shrink()
+                                  : FilterChip(
+                                      label: Text(snapshot.data["skills"][4]),
+                                      labelStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold),
+                                      selected: false,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      onSelected: (isSelected) {},
+                                      selectedColor: Color(0xffeadffd),
+                                    ),
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.person,
-                        color: Color(0xFF4AC8EA),
-                      ),
-                      title: Text("Name", style: stle),
-                      subtitle: Text(
-                          snapshot.data["fname"].toString().toUpperCase() +
-                              " " +
-                              snapshot.data["lname"].toString().toUpperCase(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontStyle: FontStyle.italic)),
-                    ),
-                    Divider(),
-                    ListTile(
-                      leading: Icon(Icons.email, color: Color(0xFF4AC8EA)),
-                      title: Text(
-                        "E-Mail",
-                        style: stle,
-                      ),
-                      subtitle: Text(snapshot.data["email"].toString(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontStyle: FontStyle.italic)),
-                    ),
-                    Divider(),
-                    ListTile(
-                      leading: Icon(Icons.padding, color: Color(0xFF4AC8EA)),
-                      title: Text(
-                        "Gender",
-                        style: stle,
-                      ),
-                      subtitle: Text(snapshot.data["gender"],
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontStyle: FontStyle.italic)),
-                    ),
-                    Divider(),
-                    ListTile(
-                      leading: Icon(Icons.location_city_outlined,
-                          color: Color(0xFF4AC8EA)),
-                      title: Text("Address", style: stle),
-                      subtitle: Text(snapshot.data["address"],
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontStyle: FontStyle.italic)),
-                    ),
-                    Divider(),
-                    ListTile(
-                      leading:
-                          Icon(Icons.description, color: Color(0xFF4AC8EA)),
-                      title: Text(
-                        "Description",
-                        style: stle,
-                      ),
-                      subtitle: Text(snapshot.data["desc"].toString(),
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
-                              fontStyle: FontStyle.italic)),
-                    ),
-                    Divider(),
-
-                    Container(
-                      height: 1,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-
-                    ListTile(
-                      leading:
-                          Icon(Icons.stars_rounded, color: Color(0xFF4AC8EA)),
-                      title: Text("Top Skills", style: stle),
-                      subtitle: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [Colors.blue[100], Colors.pink[100]]),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Wrap(
-                          spacing: 5,
-                          children: [
-                            snapshot.data["skills"][0] == null
-                                ? SizedBox.shrink()
-                                : FilterChip(
-                                    label: Text(snapshot.data["skills"][0]),
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                    selected: false,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    onSelected: (isSelected) {},
-                                    selectedColor: Color(0xffeadffd),
-                                  ),
-                            snapshot.data["skills"][1] == null
-                                ? SizedBox.shrink()
-                                : FilterChip(
-                                    label: Text(snapshot.data["skills"][1]),
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                    selected: false,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    onSelected: (isSelected) {},
-                                    selectedColor: Color(0xffeadffd),
-                                  ),
-                            snapshot.data["skills"][2] == null
-                                ? SizedBox.shrink()
-                                : FilterChip(
-                                    label: Text(snapshot.data["skills"][2]),
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                    selected: false,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    onSelected: (isSelected) {},
-                                    selectedColor: Color(0xffeadffd),
-                                  ),
-                            snapshot.data["skills"][3] == null
-                                ? SizedBox.shrink()
-                                : FilterChip(
-                                    label: Text(snapshot.data["skills"][3]),
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                    selected: false,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    onSelected: (isSelected) {},
-                                    selectedColor: Color(0xffeadffd),
-                                  ),
-                            snapshot.data["skills"][4] == null
-                                ? SizedBox.shrink()
-                                : FilterChip(
-                                    label: Text(snapshot.data["skills"][4]),
-                                    labelStyle: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold),
-                                    selected: false,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    backgroundColor: Colors.white,
-                                    onSelected: (isSelected) {},
-                                    selectedColor: Color(0xffeadffd),
-                                  ),
-                          ],
                         ),
                       ),
-                    ),
-                    Divider(),
-                    ListTile(
-                        leading:
-                            Icon(Icons.smart_button, color: Color(0xFF4AC8EA)),
-                        title: Text(
-                          "Qualifications",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        trailing: IconButton(
-                          onPressed: () async {
-                            final request = await Permission.storage.request();
-                            if (request.isGranted) {
-                              final storagePath =
-                                  await getExternalStorageDirectory();
-                              await FlutterDownloader.enqueue(
-                                  url: snapshot.data["cv"],
-                                  savedDir: storagePath.path,
-                                  fileName:
-                                      "cv of Mr.${snapshot.data["fname"]}");
-                            } else {
-                              print('Not permssion');
-                            }
-                          },
-                          icon: Icon(
-                            Icons.download_outlined,
-                            size: 35,
-                            color: Colors.green,
+                      Divider(),
+                      ListTile(
+                          leading: Icon(Icons.smart_button,
+                              color: Color(0xFF4AC8EA)),
+                          title: Text(
+                            "Qualifications",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        subtitle: Text('')),
-                    Divider(),
-                    teachSchButtom(
-                        context,
-                        "'View Tutor Schedule'",
-                        Icon(
-                          Icons.schedule,
-                        ),
-                        openTutorsch),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    teachSchButtom(context, "View Tutor Materials",
-                        Icon(Icons.school), openTutormaterial),
-
-                    Divider(),
-                    Container(
-                      height: 1,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[400],
-                        borderRadius: BorderRadius.circular(10),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              final request =
+                                  await Permission.storage.request();
+                              if (request.isGranted) {
+                                final storagePath =
+                                    await getExternalStorageDirectory();
+                                await FlutterDownloader.enqueue(
+                                    url: snapshot.data["cv"],
+                                    savedDir: storagePath.path,
+                                    fileName:
+                                        "cv of Mr.${snapshot.data["fname"]}");
+                              } else {
+                                print('Not permssion');
+                              }
+                            },
+                            icon: Icon(
+                              Icons.download_outlined,
+                              size: 35,
+                              color: Colors.green,
+                            ),
+                          ),
+                          subtitle: Text('')),
+                      Divider(),
+                      teachSchButtom(
+                          context,
+                          "'View Tutor Schedule'",
+                          Icon(
+                            Icons.schedule,
+                          ),
+                          openTutorsch),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    // if ((widget.studentTeachID == isRequest))
-                    requestButton()
-                    //  Center(
-                    //     child: FlatButton(
-                    //       color: Colors.blue[300],
-                    //       child: Text(
-                    //         'Request a tutor',
-                    //         style: TextStyle(
-                    //             color: Colors.white, fontSize: 17.0),
-                    //       ),
-                    //       onPressed: () {
-                    //         print('is ' + widget.studentTeachID);
-                    //         Service()
-                    //             .requestTutor(
-                    //                 widget.datastudnets.last + passId[14],
-                    //                 passId[14].toString(),
-                    //                 widget.datastudnets.last.toString(),
-                    //                 passId[1] + " " + passId[9],
-                    //                 passId[4])
-                    //             .then((value) =>
-                    //                 print('create request ${passId[14]}'));
-                    //         print(passId[1] + " " + passId[7]);
-                    //       },
-                    //     ),
-                    //   )
-                    // else
-                    //   Center(
-                    //     child: FlatButton(
-                    //       color: Colors.green[300],
-                    //       child: Text(
-                    //         'pending',
-                    //         style:
-                    //             TextStyle(color: Colors.white, fontSize: 17.0),
-                    //       ),
-                    //       onPressed: () {},
-                    //     ),
-                    //   ),
-                    ,
-                    Divider()
-                  ],
-                )
-              ],
-            ),
-          ));
+                      teachSchButtom(context, "View Tutor Materials",
+                          Icon(Icons.school), openTutormaterial),
+
+                      Divider(),
+                      Container(
+                        height: 1,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // if ((widget.studentTeachID == isRequest))
+                      requestButton()
+                      //  Center(
+                      //     child: FlatButton(
+                      //       color: Colors.blue[300],
+                      //       child: Text(
+                      //         'Request a tutor',
+                      //         style: TextStyle(
+                      //             color: Colors.white, fontSize: 17.0),
+                      //       ),
+                      //       onPressed: () {
+                      //         print('is ' + widget.studentTeachID);
+                      //         Service()
+                      //             .requestTutor(
+                      //                 widget.datastudnets.last + passId[14],
+                      //                 passId[14].toString(),
+                      //                 widget.datastudnets.last.toString(),
+                      //                 passId[1] + " " + passId[9],
+                      //                 passId[4])
+                      //             .then((value) =>
+                      //                 print('create request ${passId[14]}'));
+                      //         print(passId[1] + " " + passId[7]);
+                      //       },
+                      //     ),
+                      //   )
+                      // else
+                      //   Center(
+                      //     child: FlatButton(
+                      //       color: Colors.green[300],
+                      //       child: Text(
+                      //         'pending',
+                      //         style:
+                      //             TextStyle(color: Colors.white, fontSize: 17.0),
+                      //       ),
+                      //       onPressed: () {},
+                      //     ),
+                      //   ),
+                      ,
+                      Divider()
+                    ],
+                  )
+                ],
+              ),
+            ));
+          }
         },
       ),
     );

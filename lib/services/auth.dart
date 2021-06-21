@@ -9,12 +9,9 @@ import 'package:siginsignup/pages/sign.dart';
 import 'package:siginsignup/pages/studentProfile.dart';
 import 'package:siginsignup/pages/teachersPages/teacherPage.dart';
 import 'package:siginsignup/services/services.dart';
-import 'package:siginsignup/services/student.dart';
-import 'package:siginsignup/shared/googlesign.dart';
+
 import 'package:siginsignup/shared/loading.dart';
 import 'package:siginsignup/shared/shareddialog.dart';
-
-import '../admin.dart';
 
 class Auth {
   static String errorMessage;
@@ -29,26 +26,42 @@ class Auth {
       textloadingphoto, context) async {
     if (_formkey.currentState.validate()) {
       try {
-        AuthResult result = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email1, password: password1);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Loading()));
+        if (textloadingphoto != null) {
+          AuthResult result = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+                  email: email1, password: password1);
 
-        StudentsMod().studnetsData(result.user.uid.toString(), fname, lname,
-            email1, password1, gender, textloadingphoto);
-        Service().createpackageVoiding(email1);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Sign(),
-            ));
-        if (result == null) {
+          StudentsMod().studnetsData(result.user.uid.toString(), fname, lname,
+              email1, password1, gender, textloadingphoto);
+          Service().createpackageVoiding(email1);
+          if (textloadingphoto != null) {
+            SharedShowDialog()
+                .dialog2(context, "Please try to upload your photo again");
+          }
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Sign(),
+              ));
+          if (result == null) {
+            loading = false;
+            Navigator.pop(
+              context,
+            );
+          }
+        } else {
           loading = false;
           Navigator.pop(
             context,
           );
+          SharedShowDialog()
+              .dialog2(context, "Please try to upload your photo again");
         }
       } catch (error) {
         switch (error.code) {
-          case "ERROR_INVALID_EMAIL":
+          case "ERROR_OPERATION_NOT_ALLOWED":
             errorMessage = "Your email address appears to be malformed.";
             loading = false;
             Navigator.pop(
@@ -58,58 +71,47 @@ class Auth {
                 context, "Your email address appears to be malformed.");
 
             break;
-          case "ERROR_WRONG_PASSWORD":
+          case "ERROR_WEAK_PASSWORD":
             loading = false;
             Navigator.pop(
               context,
             );
-            SharedShowDialog().dialog2(context, "Your password is wrong.");
+            SharedShowDialog().dialog2(context, "ERROR_WEAK_PASSWORD.");
 
             break;
-          case "ERROR_USER_NOT_FOUND":
+          case "ERROR_INVALID_EMAIL":
             loading = false;
             Navigator.pop(
               context,
             );
 
-            SharedShowDialog()
-                .dialog2(context, "User with this email doesn't exist.");
+            SharedShowDialog().dialog2(context, "Your email is invalid.");
 
             break;
-          case "ERROR_USER_DISABLED":
-            loading = false;
-            Navigator.pop(
-              context,
-            );
-            SharedShowDialog()
-                .dialog2(context, "User with this email has been disabled.");
-
-            break;
-          case "ERROR_TOO_MANY_REQUESTS":
-            loading = false;
-            Navigator.pop(
-              context,
-            );
-            SharedShowDialog()
-                .dialog2(context, "Too many requests. Try again later.");
-
-            break;
-          case "ERROR_OPERATION_NOT_ALLOWED":
+          case "ERROR_EMAIL_ALREADY_IN_USE":
             loading = false;
             Navigator.pop(
               context,
             );
             SharedShowDialog().dialog2(
-                context, "Signing in with Email and Password is not enabled.");
+                context, "Email is already in use on different account.");
 
             break;
-          default:
-            errorMessage = "An undefined Error happened.";
-
+          case "ERROR_INVALID_CREDENTIAL":
             loading = false;
             Navigator.pop(
               context,
             );
+            SharedShowDialog().dialog2(context, "Your email is invalid.");
+
+            break;
+
+          default:
+            loading = false;
+            Navigator.pop(
+              context,
+            );
+
             SharedShowDialog().dialog2(context, "An undefined Error happened.");
         }
       }
@@ -118,11 +120,8 @@ class Auth {
         return Future.error(errorMessage);
       }
     } else {
-      print('Not Validate');
       loading = false;
-      Navigator.pop(
-        context,
-      );
+
       SharedShowDialog().dialog2(context, "Not Validate.");
     }
   }

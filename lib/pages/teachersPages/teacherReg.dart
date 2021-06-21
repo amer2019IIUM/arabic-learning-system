@@ -1,24 +1,18 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:siginsignup/Model/teacherData.dart';
-import 'package:siginsignup/custom_navigation_drawer.dart';
-
-import 'package:siginsignup/pages/sign.dart';
 import 'package:siginsignup/pages/teachersPages/teachersignin.dart';
 import 'package:siginsignup/services/auth.dart';
 import 'package:siginsignup/services/services.dart';
 import 'package:siginsignup/shared/DRAWER.dart';
 import 'package:siginsignup/shared/Loading.dart';
+import 'package:siginsignup/shared/shareddialog.dart';
 import 'package:siginsignup/stylingwidget.dart';
 
 class TeacherReg extends StatefulWidget {
@@ -496,7 +490,7 @@ class NextPageRes extends StatefulWidget {
 
 class _NextPageResState extends State<NextPageRes> {
   String address;
-  String gender = '';
+  String gender = 'Male';
   AuthResult authResult;
   var urlphoto;
   var cv;
@@ -511,7 +505,8 @@ class _NextPageResState extends State<NextPageRes> {
   String female = 'Female';
   int group = 1;
   bool loading = false;
-
+  String uploadedPhoto = "Upload your photo";
+  String uploadedCv = "Upload your cv";
   GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -559,8 +554,7 @@ class _NextPageResState extends State<NextPageRes> {
                         height: 15.0,
                       ),
                       InkWell(
-                        child: StylingWidgets()
-                            .uploadBtn("Upload your photo profile"),
+                        child: StylingWidgets().uploadBtn(uploadedPhoto),
                         onTap: () async {
                           await Permission.photos.request();
                           var perm = await Permission.photos.status;
@@ -578,11 +572,15 @@ class _NextPageResState extends State<NextPageRes> {
                               urlphoto = await snapshot.ref.getDownloadURL();
                               setState(() {
                                 textloadingphoto = urlphoto.toString();
+                                uploadedPhoto = "It is Uploaded";
                               });
                             } else if (result == null) {
                               setState(() {
                                 textloadingphoto = '';
                               });
+
+                              SharedShowDialog().showdialogSuccessful1(
+                                  context, "Your photo Uploaded Successfully");
                             } else {
                               print('no image taken');
                             }
@@ -595,7 +593,7 @@ class _NextPageResState extends State<NextPageRes> {
                         height: 15.0,
                       ),
                       InkWell(
-                        child: StylingWidgets().uploadBtn("Upload your CV"),
+                        child: StylingWidgets().uploadBtn(uploadedCv),
                         onTap: () async {
                           File file = await FilePicker.getFile(
                               allowedExtensions: ['pdf', 'doc'],
@@ -610,8 +608,11 @@ class _NextPageResState extends State<NextPageRes> {
                                 .putFile(file)
                                 .onComplete;
                             cv = await snapshot.ref.getDownloadURL();
+                            SharedShowDialog().showdialogSuccessful1(
+                                context, "Your CV Uploaded Successfully");
                             setState(() {
                               loadingcv = cv;
+                              uploadedCv = "It is Uploaded";
                             });
                           }
                         },
@@ -697,38 +698,46 @@ class _NextPageResState extends State<NextPageRes> {
                               setState(() {
                                 loading = true;
                               });
-                              authResult = await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                      email: widget.email,
-                                      password: widget.password);
 
-                              Auth().registerTutors(
-                                  authResult.user.uid,
-                                  widget.fname,
-                                  widget.email,
-                                  widget.password,
-                                  widget.country,
-                                  textloadingphoto,
-                                  widget.fname.substring(0, 1).toUpperCase(),
-                                  widget.des,
-                                  cv,
-                                  gender,
-                                  address,
-                                  widget.slotTime);
-                              Service().setTimeMonNull(widget.email);
-                              Service().setTimeTusNull(widget.email);
-                              Service().setTimeWenNull(widget.email);
-                              Service().setTimeThruNull(widget.email);
-                              Service().setTimeFriNull(widget.email);
-                              Service().setTimeSaSunNull(widget.email);
+                              if (cv != null && textloadingphoto != null) {
+                                authResult = await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: widget.email,
+                                        password: widget.password);
 
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => TeacherSign(),
-                                  ));
-                              if (authResult == null) {
+                                Auth().registerTutors(
+                                    authResult.user.uid,
+                                    widget.fname,
+                                    widget.email,
+                                    widget.password,
+                                    widget.country,
+                                    textloadingphoto,
+                                    widget.fname.substring(0, 1).toUpperCase(),
+                                    widget.des,
+                                    cv,
+                                    gender,
+                                    address,
+                                    widget.slotTime);
+                                Service().setTimeMonNull(widget.email);
+                                Service().setTimeTusNull(widget.email);
+                                Service().setTimeWenNull(widget.email);
+                                Service().setTimeThruNull(widget.email);
+                                Service().setTimeFriNull(widget.email);
+                                Service().setTimeSaSunNull(widget.email);
+
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TeacherSign(),
+                                    ));
+                                if (authResult == null) {
+                                  loading = false;
+                                }
+                              } else {
                                 loading = false;
+
+                                SharedShowDialog().dialog2(context,
+                                    "Make sure you have uploaded your photo and CV");
                               }
                             } catch (error) {
                               switch (error.code) {
@@ -737,6 +746,8 @@ class _NextPageResState extends State<NextPageRes> {
                                     errorMessage = errorMessage =
                                         "Anonymous accounts are not enabled";
                                     loading = false;
+                                    SharedShowDialog().dialog2(context,
+                                        "Your email address appears to be malformed.");
                                   });
 
                                   break;
@@ -745,6 +756,8 @@ class _NextPageResState extends State<NextPageRes> {
                                     errorMessage = errorMessage = errorMessage =
                                         "Your password is too weak";
                                     loading = false;
+                                    SharedShowDialog().dialog2(context,
+                                        "Your email address appears to be malformed.");
                                   });
 
                                   break;
@@ -761,6 +774,8 @@ class _NextPageResState extends State<NextPageRes> {
                                     errorMessage =
                                         "Email is already in use on different account";
                                     loading = false;
+                                    SharedShowDialog().dialog2(context,
+                                        "Your email address appears to be malformed.");
                                   });
 
                                   break;
@@ -788,7 +803,7 @@ class _NextPageResState extends State<NextPageRes> {
                             loading = false;
                           }
                         },
-                        child: StylingWidgets().signButton("SUBMIT"),
+                        child: StylingWidgets().signButton("Register"),
                       ),
                       Divider(),
                       Divider()

@@ -301,7 +301,7 @@ class _ChatTeacherScreenState extends State<ChatTeacherScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => VideoCall(
-          channelName: "ssffsfin",
+          channelName: widget.chatRoomId,
           role: ClientRole.Broadcaster,
         ),
       ),

@@ -241,7 +241,7 @@ class _TeacherPageState extends State<TeacherPage> {
   }
 
   dynamic circle() {
-    return BoxDecoration(
+  return BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: Colors.blueAccent.withOpacity(.2));
   }

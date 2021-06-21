@@ -8,15 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:siginsignup/Model/teacherData.dart';
+
 import 'package:siginsignup/call/call.dart';
 import 'package:siginsignup/helper/helperFunctions.dart';
-import 'package:siginsignup/pages/chat.dart';
-import 'package:siginsignup/pages/sign.dart';
-import 'package:siginsignup/peref.dart';
 import 'package:siginsignup/services/services.dart';
-import 'package:intl/intl.dart';
-import 'package:siginsignup/helper/helperFunctions.dart';
+
 import 'package:siginsignup/studentsPages/ratingPage.dart';
 
 class ChatStudentScreen extends StatefulWidget {
@@ -309,7 +305,7 @@ class _ChatStudentScreenState extends State<ChatStudentScreen> {
                           .document(studentEmail)
                           .updateData({"hasMintues": total});
                       HelperFunctions.saveUserISINCHATSharedPreference(false);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => RatingsPage()));

@@ -11,7 +11,7 @@ import 'package:siginsignup/pages/studentProfile.dart';
 import 'package:siginsignup/services/services.dart';
 import 'package:siginsignup/shared/appbar.dart';
 import 'package:siginsignup/shared/DRAWER.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:siginsignup/shared/bottombar.dart';
 import 'package:siginsignup/shared/loading.dart';
 import 'package:siginsignup/shared/shareddialog.dart';

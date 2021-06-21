@@ -18,3 +18,20 @@ class Loading extends StatelessWidget {
     );
   }
 }
+
+class Loading2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: SpinKitCubeGrid(
+              color: selectedColor,
+              duration: Duration(seconds: 10),
+            ),
+          )),
+    );
+  }
+}

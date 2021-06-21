@@ -190,8 +190,11 @@ class _LearningMaterialState extends State<PackagesPage> {
                       )
                     ],
                   )
-                : StylingWidgets()
-                    .info("You already have", "a package", context),
+                :
+                // : RaisedButton(onPressed: () {
+                //     print(studnetEmail);
+                //   }),
+                StylingWidgets().info("You already have", "a package", context),
             bottomNavigationBar: BottomBar().bottomBar(
                 context,
                 datastudnets,
