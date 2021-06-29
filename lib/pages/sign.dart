@@ -128,18 +128,6 @@ class _SignState extends State<Sign> {
                           child: StylingWidgets().signButton("LOGIN"),
                         ),
                         SizedBox(height: 20.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Forgot password?',
-                                style: GoogleFonts.aBeeZee()),
-                            Text(' Reset',
-                                style: GoogleFonts.aBeeZee(
-                                    fontWeight: FontWeight.bold,
-                                    color: selectedColor)),
-                            SizedBox(width: 2.0),
-                          ],
-                        ),
                         SizedBox(height: 20.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

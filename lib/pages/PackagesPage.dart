@@ -32,7 +32,7 @@ class _LearningMaterialState extends State<PackagesPage> {
   Razorpay razorpay;
   TextEditingController textEditingController = new TextEditingController();
   int amount;
-  int hasMintues = 0;
+  int hasMintues;
   List datastudnets;
   List data;
   String emailStud;
@@ -172,29 +172,43 @@ class _LearningMaterialState extends State<PackagesPage> {
     return datastudnets == null
         ? Loading()
         : Scaffold(
-            backgroundColor: Colors.white,
             appBar: Wid().appbar("Package"),
             drawer: DWidget().drawer(datastudnets[0] + " " + datastudnets[2],
                 datastudnets[6], datastudnets[5], context, datastudnets),
-            body: hasMintues <= 0
-                ? ListView(
-                    children: [
-                      centerBox(
-                          "Basic", "20 RM", "10 Hours", 36000, openCheckout1),
-                      centerBox("Advanced", "50 RM", "25 hours", 90000,
-                          openCheckout2),
-                      centerBox(
-                          "Pro", "100 RM", "60 Hours", 216000, openCheckout3),
-                      SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  )
-                :
-                // : RaisedButton(onPressed: () {
-                //     print(studnetEmail);
-                //   }),
-                StylingWidgets().info("You already have", "a package", context),
+            body: StreamBuilder(
+                stream: Firestore.instance
+                    .collection('packages')
+                    .document(datastudnets[6])
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting ||
+                      hasMintues == null ||
+                      datastudnets == null) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    if (hasMintues <= 0 || hasMintues == null) {
+                      return ListView(
+                        children: [
+                          centerBox("Basic", "20 RM", "10 Hours", 36000,
+                              openCheckout1),
+                          centerBox("Advanced", "50 RM", "25 hours", 90000,
+                              openCheckout2),
+                          centerBox("Pro", "100 RM", "60 Hours", 216000,
+                              openCheckout3),
+                          SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      );
+                    } else {
+                      return StylingWidgets()
+                          .info("You already have", "a package", context);
+                    }
+                    ;
+                  }
+                }),
             bottomNavigationBar: BottomBar().bottomBar(
                 context,
                 datastudnets,
@@ -209,6 +223,35 @@ class _LearningMaterialState extends State<PackagesPage> {
                 null,
                 null,
                 null));
+
+    // datastudnets == null
+    //     ? Loading()
+    //     :
+
+    //     Scaffold(
+    //         backgroundColor: Colors.white,
+    //         appBar: Wid().appbar("Package"),
+    //         drawer: DWidget().drawer(datastudnets[0] + " " + datastudnets[2],
+    //             datastudnets[6], datastudnets[5], context, datastudnets),
+    //         body: hasMintues <= 0
+    //             ? ListView(
+    //                 children: [
+    //                   centerBox(
+    //                       "Basic", "20 RM", "10 Hours", 36000, openCheckout1),
+    //                   centerBox("Advanced", "50 RM", "25 hours", 90000,
+    //                       openCheckout2),
+    //                   centerBox(
+    //                       "Pro", "100 RM", "60 Hours", 216000, openCheckout3),
+    //                   SizedBox(
+    //                     height: 10,
+    //                   )
+    //                 ],
+    //               )
+    //             :
+    //             // : RaisedButton(onPressed: () {
+    //             //     print(studnetEmail);
+    //             //   }),
+    //             StylingWidgets().info("You already have", "a package", context),
   }
 
   dynamic circle() {

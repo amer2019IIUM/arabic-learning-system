@@ -238,9 +238,7 @@ class Auth {
     } else {
       print('Not Validate');
       loading = false;
-      Navigator.pop(
-        context,
-      );
+
       SharedShowDialog().dialog2(context, "Not Validate.");
     }
   }
@@ -396,9 +394,7 @@ class Auth {
     } else {
       print('Not Validate');
       loading = false;
-      Navigator.pop(
-        context,
-      );
+
       SharedShowDialog().dialog2(context, "Not Validate.");
     }
   }

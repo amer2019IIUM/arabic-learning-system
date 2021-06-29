@@ -30,7 +30,10 @@ class _ViewTeacherMaterialState extends State<ViewTeacherMaterial> {
     return Scaffold(
       appBar: Wid().appbar("Tutor's Materials"),
       body: StreamBuilder(
-        stream: Firestore.instance.collection("teachersMaterials").snapshots(),
+        stream: Firestore.instance
+            .collection("teachersMaterials")
+            .where("email", isEqualTo: widget.teacherEmail)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -40,56 +43,51 @@ class _ViewTeacherMaterialState extends State<ViewTeacherMaterial> {
             return ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
-                  return snapshot.data.documents[index]["email"] !=
-                          widget.teacherEmail
-                      ? null
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            child: ListTile(
-                              leading: Container(
-                                child: Icon(
-                                  Icons.circle,
-                                  color: Colors.primaries[Random()
-                                      .nextInt(Colors.primaries.length)],
-                                ),
-                              ),
-                              trailing: IconButton(
-                                onPressed: () async {
-                                  final request =
-                                      await Permission.storage.request();
-                                  if (request.isGranted) {
-                                    final storagePath =
-                                        await getExternalStorageDirectory();
-
-                                    await FlutterDownloader.enqueue(
-                                        url: snapshot.data.documents[index]
-                                            ["docUrl"],
-                                        savedDir: storagePath.path,
-                                        fileName:
-                                            "${snapshot.data.documents[index]["title"]}");
-                                  } else {
-                                    print('Not permssion');
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.file_download,
-                                  size: 30,
-                                ),
-                              ),
-                              title: Text(
-                                snapshot.data.documents[index]["title"]
-                                    .toString()
-                                    .toUpperCase(),
-                                style: GoogleFonts.josefinSans(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                  "\n${snapshot.data.documents[index]["desc"]}",
-                                  style: GoogleFonts.josefinSans()),
-                            ),
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: Container(
+                          child: Icon(
+                            Icons.circle,
+                            color: Colors.primaries[
+                                Random().nextInt(Colors.primaries.length)],
                           ),
-                        );
+                        ),
+                        trailing: IconButton(
+                          onPressed: () async {
+                            final request = await Permission.storage.request();
+                            if (request.isGranted) {
+                              final storagePath =
+                                  await getExternalStorageDirectory();
+
+                              await FlutterDownloader.enqueue(
+                                  url: snapshot.data.documents[index]["docUrl"],
+                                  savedDir: storagePath.path,
+                                  fileName:
+                                      "${snapshot.data.documents[index]["title"]}");
+                            } else {
+                              print('Not permssion');
+                            }
+                          },
+                          icon: Icon(
+                            Icons.file_download,
+                            size: 30,
+                          ),
+                        ),
+                        title: Text(
+                          snapshot.data.documents[index]["title"]
+                              .toString()
+                              .toUpperCase(),
+                          style: GoogleFonts.josefinSans(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                            "\n${snapshot.data.documents[index]["desc"]}",
+                            style: GoogleFonts.josefinSans()),
+                      ),
+                    ),
+                  );
                 });
           }
         },
